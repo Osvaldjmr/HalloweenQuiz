@@ -1,4 +1,4 @@
-//array de preguntas de prueba
+// Array de preguntas de prueba
 const preguntas = [
     {
         texto: "¿Qué criatura es famosa por su aullido en Halloween?",
@@ -15,33 +15,33 @@ const preguntas = [
 // Variables globales de pregunta
 let preguntaActual = 0;
 
-//Eleementos DOM
-const contenedorPregunta = document.getElementById("contenedor-pregunta");
+// Elementos del DOM
+const contenedorPregunta = document.getElementById("pregunta");
 const contenedorOpciones = document.getElementById("contenedor-opciones");
-const botonSubmit = document.getElementById("boton-submit");
 
-//Function cargamos la pregunta
+// Función para cargar la pregunta
 const cargarPregunta = () => {
-    //Obtenemos la pregunta actual
+    // Obtenemos la pregunta actual
     const pregunta = preguntas[preguntaActual];
-    //Mostramos la pregunta en el DOM
+
+    // Mostramos la pregunta en el DOM
     contenedorPregunta.textContent = pregunta.texto;
 
-    //limpiamos opciones anterioes
+    // Limpiamos opciones anteriores
     contenedorOpciones.innerHTML = "";
 
-    //generamos opciones
-    preguntas.opciones.forEach(opcion => {
+    // Generamos las opciones
+    pregunta.opciones.forEach(opcion => {
         const botonOpcion = document.createElement("button");
         botonOpcion.textContent = opcion;
         botonOpcion.classList.add('opcion');
-        botonOpcion.addEventListener('click', () => seleccionarOpcion());
+        botonOpcion.addEventListener('click', () => seleccionarOpcion(opcion)); // Pasar la opción seleccionada
         contenedorOpciones.appendChild(botonOpcion);
     });
 };
 
-//Funcion selecionamos una opcion
-const seleccionarOpcion = () => {
+// Función para seleccionar una opción
+const seleccionarOpcion = (opcion) => {
     const pregunta = preguntas[preguntaActual];
     if (opcion === pregunta.correcta) {
         alert("¡Correcto!");
@@ -51,21 +51,23 @@ const seleccionarOpcion = () => {
     avanzarPregunta();
 };
 
-//funcion para avanzar la pregunta 
+// Función para avanzar a la siguiente pregunta
 const avanzarPregunta = () => {
     preguntaActual++;
     if (preguntaActual < preguntas.length) {
-        //slide effectaso
+        // Efecto de "slide"
         contenedorPregunta.style.opacity = 0;
         contenedorOpciones.style.opacity = 0;
 
-setTimeout(() =>{
-cargarPregunta();
-conten
-
-
-})
-
+        setTimeout(() => {
+            cargarPregunta();
+            contenedorPregunta.style.opacity = 1;
+            contenedorOpciones.style.opacity = 1;
+        }, 300); // Tiempo del efecto
+    } else {
+        alert("¡Fin de preguntas!");
     }
+};
 
-}
+// Iniciar el Quiz
+cargarPregunta();
