@@ -44,6 +44,7 @@ const cargarPregunta = () => {
 const seleccionarOpcion = (opcion) => {
     const pregunta = preguntas[preguntaActual];
     if (opcion === pregunta.correcta) {
+        puntuacion++;
         alert("¡Correcto!");
     } else {
         alert("¡Incorrecto!");
@@ -66,8 +67,29 @@ const avanzarPregunta = () => {
         }, 300); // Tiempo del efecto
     } else {
         alert("¡Fin de preguntas!");
+
+    }
+    let preguntaFinal = preguntaActual >= preguntas.length;
+
+    if (preguntaFinal) {
+        const resultadosGuardados = JSON.parse(localStorage.getItem('resultados')) || [];
+        resultadosGuardados.push({
+            fecha: new Date().toISOString().split('T')[0], //Fecha Actual)
+            puntuacion
+        });
+        localStorage.setItem('resultados', JSON.stringify(resultadosGuardados));
+        alert("!Fin del Quiz¡ Tu puntuacion: " + puntuacion);
+        window.location.href = "results.html"; //Redirigimos a la pagina de resultado
     }
 };
+
+let puntuacion = 0;
+
+
+
+
+
+
 
 // Iniciar el Quiz
 cargarPregunta();
