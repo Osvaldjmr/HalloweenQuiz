@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultados</title>
+    <title>Resultados del Quiz</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
-    <header>Resultados del Quiz</header>
+    <header>
+        <h1>Resultados del Quiz</h1>
+    </header>
     <main>
-        <section id="resultado-final">
-            <!--MOstaramos la puntuacion aqui-->
+        <section id="resultado-final" aria-live="polite">
+            <!-- Los resultados se mostrarán aquí -->
         </section>
-        <button id="volver-inicio">Volver a inicio</button>
-
+        <!-- Canvas para la gráfica -->
+        <canvas id="grafica-resultados" width="600" height="400"
+            style="border: 1px solid #ccc; margin-top: 20px;"></canvas>
+        <button class="btn" id="volver-inicio" aria-label="Volver al inicio">Volver al inicio</button>
     </main>
     <footer>
         <p>© 2024 Quiz de Halloween</p>
     </footer>
-    <script src="./scripts/results.js"></script>
+    <script src="scripts/results.js"></script>
 </body>
 
 </html>

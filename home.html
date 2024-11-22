@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - Quiz de Halloween</title>
+    <title>Inicio del Quiz - Halloween</title>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 
@@ -13,19 +13,20 @@
         <h1>Quiz de Halloween 🎃</h1>
     </header>
     <main>
-        <section>
-            <h2>Últimos resultados</h2>
-            <canvas id="grafica-resultados" width="500" height="400"></canvas>
-            <!--elemento para la grafica, se llena con datos posteriores-->
+        <p>¡Prepárate para un desafío de conocimientos sobre Halloween!</p>
+        <section id="resultado-final" aria-live="polite">
+            <!-- Aquí se mostrarán los resultados -->
         </section>
-        <section>
-            <a href="question.html" class="boton-inicio">Comenzar Quiz</a>
-        </section>
+        <button class="btn" id="comenzar-quiz" aria-label="Comenzar el Quiz">Comenzar Quiz</button>
     </main>
     <footer>
         <p>© 2024 Quiz de Halloween</p>
     </footer>
-    <script src="scripts/app.js"></script>
+    <script>
+        document.getElementById('comenzar-quiz').addEventListener('click', () => {
+            window.location.href = "question.html";
+        });
+    </script>
 </body>
 
 </html>

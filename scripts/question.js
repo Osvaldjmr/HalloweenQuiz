@@ -1,95 +1,78 @@
-// Array de preguntas de prueba
-const preguntas = [
-    {
-        texto: "¿Qué criatura es famosa por su aullido en Halloween?",
-        opciones: ["Lobo", "Murciélago", "Fantasma", "Bruja"],
-        correcta: "Lobo"
-    },
-    {
-        texto: "¿Cuál es el origen del Halloween?",
-        opciones: ["México", "Estados Unidos", "Irlanda", "Egipto"],
-        correcta: "Irlanda"
-    }
-];
-
-// Variables globales de pregunta
+// Variables globales
+let preguntas = [];
 let preguntaActual = 0;
+let puntuacion = 0;
 
 // Elementos del DOM
 const contenedorPregunta = document.getElementById("pregunta");
 const contenedorOpciones = document.getElementById("contenedor-opciones");
+const botonFinalizar = document.getElementById("boton-finalizar");
 
-// Función para cargar la pregunta
+// Obtener preguntas desde la API
+const obtenerPreguntas = async () => {
+    try {
+        const response = await fetch('https://opentdb.com/api.php?amount=10&type=multiple');
+        const data = await response.json();
+        return data.results.map(p => ({
+            texto: p.question,
+            opciones: [...p.incorrect_answers, p.correct_answer].sort(() => Math.random() - 0.5),
+            correcta: p.correct_answer,
+        }));
+    } catch (error) {
+        console.error('Error al obtener preguntas:', error);
+        return [];
+    }
+};
+
+// Cargar la pregunta actual
 const cargarPregunta = () => {
-    // Obtenemos la pregunta actual
+    if (preguntaActual >= preguntas.length) {
+        // Mostrar el botón de finalizar
+        botonFinalizar.style.display = 'block';
+        return;
+    }
+
     const pregunta = preguntas[preguntaActual];
-
-    // Mostramos la pregunta en el DOM
     contenedorPregunta.textContent = pregunta.texto;
-
-    // Limpiamos opciones anteriores
     contenedorOpciones.innerHTML = "";
 
-    // Generamos las opciones
     pregunta.opciones.forEach(opcion => {
-        const botonOpcion = document.createElement("button");
-        botonOpcion.textContent = opcion;
-        botonOpcion.classList.add('opcion');
-        botonOpcion.addEventListener('click', () => seleccionarOpcion(opcion)); // Pasar la opción seleccionada
-        contenedorOpciones.appendChild(botonOpcion);
+        const boton = document.createElement('button');
+        boton.textContent = opcion;
+        boton.classList.add('opcion');
+        boton.addEventListener('click', () => seleccionarOpcion(opcion));
+        contenedorOpciones.appendChild(boton);
     });
 };
 
-// Función para seleccionar una opción
+// Validar la respuesta seleccionada
 const seleccionarOpcion = (opcion) => {
     const pregunta = preguntas[preguntaActual];
     if (opcion === pregunta.correcta) {
         puntuacion++;
-        alert("¡Correcto!");
-    } else {
-        alert("¡Incorrecto!");
     }
-    avanzarPregunta();
-};
-
-// Función para avanzar a la siguiente pregunta
-const avanzarPregunta = () => {
     preguntaActual++;
-    if (preguntaActual < preguntas.length) {
-        // Efecto de "slide"
-        contenedorPregunta.style.opacity = 0;
-        contenedorOpciones.style.opacity = 0;
-
-        setTimeout(() => {
-            cargarPregunta();
-            contenedorPregunta.style.opacity = 1;
-            contenedorOpciones.style.opacity = 1;
-        }, 300); // Tiempo del efecto
-    } else {
-        alert("¡Fin de preguntas!");
-
-    }
-    let preguntaFinal = preguntaActual >= preguntas.length;
-
-    if (preguntaFinal) {
-        const resultadosGuardados = JSON.parse(localStorage.getItem('resultados')) || [];
-        resultadosGuardados.push({
-            fecha: new Date().toISOString().split('T')[0], //Fecha Actual)
-            puntuacion
-        });
-        localStorage.setItem('resultados', JSON.stringify(resultadosGuardados));
-        alert("!Fin del Quiz¡ Tu puntuacion: " + puntuacion);
-        window.location.href = "results.html"; //Redirigimos a la pagina de resultado
-    }
+    cargarPregunta();
 };
 
-let puntuacion = 0;
+// Guardar resultados en Local Storage
+const guardarResultados = () => {
+    const resultados = JSON.parse(localStorage.getItem('resultados')) || [];
+    resultados.push({
+        fecha: new Date().toISOString().split('T')[0],
+        puntuacion,
+    });
+    localStorage.setItem('resultados', JSON.stringify(resultados));
+};
 
-
-
-
-
-
+// Redirigir a la página de resultados
+botonFinalizar.addEventListener('click', () => {
+    guardarResultados();
+    window.location.href = "results.html";
+});
 
 // Iniciar el Quiz
-cargarPregunta();
+(async () => {
+    preguntas = await obtenerPreguntas();
+    cargarPregunta();
+})();

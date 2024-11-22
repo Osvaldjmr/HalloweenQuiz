@@ -12,22 +12,17 @@
     <header>
         <h1>Quiz de Halloween 🎃</h1>
     </header>
-
     <main>
-        <!-- Pregunta -->
-        <section id="contenedor-pregunta">
-            <h2 id="pregunta">Aquí irá la pregunta ...</h2>
+        <section id="contenedor-pregunta" aria-labelledby="pregunta">
+            <h2 id="pregunta">Aquí irá la pregunta...</h2>
         </section>
-
-        <!-- Contenedor de opciones -->
-        <section id="contenedor-opciones">
-            <!-- Generamos dinámicamente las opciones -->
+        <section id="contenedor-opciones" role="list">
+            <!-- Opciones generadas dinámicamente -->
         </section>
-
-        <!-- Botón para avanzar a la siguiente pregunta -->
-        <button id="boton-submit">Enviar respuesta</button>
+        <!-- Botón para finalizar el Quiz -->
+        <button id="boton-finalizar" class="btn" style="display: none;" aria-label="Finalizar el Quiz">Finalizar
+            Quiz</button>
     </main>
-
     <footer>
         <p>© 2024 Quiz de Halloween</p>
     </footer>
